@@ -1,0 +1,42 @@
+// area data format - 面积图数据格式
+
+
+var json = {
+    "data": {
+        "chart_info": {
+            "chart": {
+                "curType": "area",
+                "options": {
+                    "xLabel": "x轴维度名称",
+                    "yLabel": "y轴维度名称",
+                    "data": [
+                        {
+                            "key": "战斗力",
+                            "values": [
+                                [0, 2],
+                                [1, 4],
+                                [2, 5],
+                                [3, 4],
+                                [4, 1]
+                            ]
+                        },
+                        {
+                            "key": "忍耐力",
+                            "values": [
+                                [0, 2],
+                                [1, 4],
+                                [2, 5],
+                                [3, 4],
+                                [4, 1]
+                            ]
+                        }
+                    ]
+                }
+            }
+        },
+        "is_old_user": 1,
+        "union_id": "7924edd839a02c806e092b7425bc7172"
+    },
+    "info": "获取图表数据",
+    "status": 1
+};

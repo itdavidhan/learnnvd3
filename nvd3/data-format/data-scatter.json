@@ -1,0 +1,45 @@
+// scatter data format - 散点图数据格式
+
+
+var json = {
+    "data": {
+        "chart_info": {
+            "chart": {
+                "curType": "scatter",
+                "options": {
+                    "xLabel": "x轴维度名称",
+                    "yLabel": "y轴维度名称",
+                    "data": [
+                        {
+                            "key": "战斗力",
+                            "values": [
+                                {"x": 0, "y": 10, "size": 4},
+                                {"x": 1, "y": 10, "size": 4},
+                                {"x": 2, "y": 10, "size": 4},
+                                {"x": 3, "y": 50, "size": 4},
+                                {"x": 4, "y": 20, "size": 4},
+                                {"x": 5, "y": 20, "size": 4}
+                            ]
+                        },
+                        {
+                            "area": true,
+                            "key": "忍耐力",
+                            "values": [
+                                {"x": 0, "y": 10, "size": 4},
+                                {"x": 1, "y": 10, "size": 4},
+                                {"x": 2, "y": 10, "size": 4},
+                                {"x": 3, "y": 50, "size": 4},
+                                {"x": 4, "y": 20, "size": 4},
+                                {"x": 5, "y": -20, "size": 4}
+                            ]
+                        }
+                    ]
+                }
+            }
+        },
+        "is_old_user": 1,
+        "union_id": "7924edd839a02c806e092b7425bc7172"
+    },
+    "info": "获取图表数据",
+    "status": 1
+};

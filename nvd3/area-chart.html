@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" href="../css/nv.d3.css">
+	<style type="text/css">
+	#box{width: 50%; height: 350px; border: 1px solid #EEE;}
+	</style>
+	<script type="text/javascript" src="../js/d3.js"></script>
+	<script type="text/javascript" src="../js/nv.d3.js"></script>
+	<script type="text/javascript">
+	window.onload = function() {
+		var data = [
+			{
+				'key': 'aaa',
+				'values': [
+					[0, 2],
+					[1, 4],
+					[2, 5],
+					[3, 4],
+					[4, 1]
+				]
+			},
+			{
+				'key': 'bbb',
+				'values': [
+					[0, 12],
+					[1, 14],
+					[2, 15],
+					[3, 14],
+					[4, 11]
+				]
+			}
+		];
+
+		var chart;
+		nv.addGraph(function() {
+		    chart = nv.models.stackedAreaChart()
+		        .useInteractiveGuideline(true) // dw+是否显示guide参考线
+		        .x(function(d) { return d[0] })
+		        .y(function(d) { return d[1] })
+		        .controlLabels({stacked: "Stacked"})
+		        // .color(['red', 'green', 'blue', 'yellow']) // dw+
+		        .duration(300);
+
+		    // chart.xAxis.tickFormat(function(d) { return d3.time.format('%x')(new Date(d)) });
+		    chart.yAxis.tickFormat(d3.format(',.4f'));
+
+		    chart.legend.vers('furious');
+
+		    d3.select('#box').append('svg')
+		        .datum(data)
+		        .transition().duration(1000)
+		        .call(chart)
+		        .each('start', function() {
+		            setTimeout(function() {
+		                d3.selectAll('#box *').each(function() {
+		                    if(this.__transition__)
+		                        this.__transition__.duration = 1;
+		                })
+		            }, 0)
+		        });
+
+		    nv.utils.windowResize(chart.update);
+		    return chart;
+		});
+	}
+	</script>
+</head>
+<body class="with-3d-shadow with-transitions">
+<div id="box"></div>
+</body>
+</html>

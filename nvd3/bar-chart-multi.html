@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="../css/nv.d3.css">
+	<style type="text/css">
+	#box{width: 50%; height: 300px;}
+	</style>
+	<script type="text/javascript" src="../js/d3.js"></script>
+	<script type="text/javascript" src="../js/nv.d3.js"></script>
+	<script>
+	window.onload = function() {
+		var data = [
+			{
+				'key': '一线天',
+				'values': [
+					{'x': 'a', 'y': 1},
+					{'x': 'b', 'y': 2},
+					{'x': 'c', 'y': 3},
+					{'x': 'd', 'y': 5},
+					{'x': 'e', 'y': 2}
+				]
+			},
+			{
+				// 'area': true,
+				'key': '2线天',
+				'values': [
+					{'x': 'a', 'y': 3},
+					{'x': 'b', 'y': -5},
+					{'x': 'c', 'y': 4},
+					{'x': 'd', 'y': 3},
+					{'x': 'e', 'y': 4}
+				]
+			}
+		];
+		
+		var chart;
+		nv.addGraph(function() {
+		    chart = nv.models.multiBarChart()
+		        // .barColor(d3.scale.category20().range())
+		        // .barColor(['red', 'green']) // dw+
+		        .duration(300)
+		        .margin({bottom: 100, left: 70})
+		        .rotateLabels(45) // dw+标签旋转
+		        .groupSpacing(0.1) // dw+分组间距
+		    ;
+
+		    chart.reduceXTicks(false).staggerLabels(true);
+
+		    chart.xAxis
+		        .axisLabel("ID of Furry Cat Households")
+		        .axisLabelDistance(35) //  dw+x轴文字间距
+		        .showMaxMin(false)
+		        // .tickFormat(d3.format(',.6f'))
+		        // .tickFormat(d3.format('%')) // dw+
+		    ;
+
+		    chart.yAxis
+		        .axisLabel("Change in Furry Cat Population")
+		        .axisLabelDistance(-5)
+		        .tickFormat(d3.format(',.01f'))
+		    ;
+
+		    chart.dispatch.on('renderEnd', function(){
+		        nv.log('Render Complete');
+		    });
+
+		    d3.select('#box')
+		    	.append('svg')
+		        .datum(data)
+		        .call(chart);
+
+		    nv.utils.windowResize(chart.update);
+
+		    chart.dispatch.on('stateChange', function(e) {
+		        nv.log('New State:', JSON.stringify(e));
+		    });
+		    chart.state.dispatch.on('change', function(state){
+		        nv.log('state', JSON.stringify(state));
+		    });
+
+		    return chart;
+		});
+	};
+	</script>
+</head>
+<body>
+<div id="box">
+	 
+</div>
+</body>
+</html>

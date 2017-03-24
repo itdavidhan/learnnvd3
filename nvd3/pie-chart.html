@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="../css/nv.d3.css">
+	<style type="text/css">
+	#box{width: 350px; height: 350px; border: 1px solid #EEE;}
+	</style>
+	<script type="text/javascript" src="../js/d3.js"></script>
+	<script type="text/javascript" src="../js/nv.d3.js"></script>
+	<script>
+	window.onload = function() {
+		var data = [
+			 
+			{'x': '狮子', 'y': 20000},
+			{'x': '老虎', 'y': 20000},
+			{'x': '长颈鹿', 'y': 5000},
+			{'x': '山羊', 'y': 2000},
+			{'x': '狗', 'y': 10000}
+			 
+		];
+
+		var _h = 350;
+		var _w = 350;
+		
+		nv.addGraph(function() {
+		    var chart = nv.models.pieChart()
+		        .x(function(d) { return d.x })
+		        .y(function(d) { return d.y })
+		        // .width(_w)
+		        // .height(_h)
+		        .showTooltipPercent(true);
+
+		    d3.select("#box")
+		    	.append('svg')
+		        .datum(data)
+		        .transition().duration(1200)
+		        // .attr('width', _w)
+		        // .attr('height', _h)
+		        .call(chart);
+
+		    return chart;
+		});
+	};
+	</script>
+</head>
+<body>
+<div id="box">
+	 
+</div>
+</body>
+</html>

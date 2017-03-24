@@ -1,0 +1,26 @@
+// pie data format
+
+
+var json = {
+    "data": {
+        "chart_info": {
+            "chart": {
+                "curType": "pie",
+                "options": {
+                    "title": "饼图名称",
+                    "data": [
+                        {"x": "狮子", "y": 10000},
+                        {"x": "老虎", "y": 10000},
+                        {"x": "长颈鹿", "y": 1000},
+                        {"x": "山羊", "y": 500},
+                        {"x": "狗", "y": 2000}
+                    ]
+                }
+            }
+        },
+        "is_old_user": 1,
+        "union_id": "7924edd839a02c806e092b7425bc7172"
+    },
+    "info": "获取图表数据",
+    "status": 1
+};

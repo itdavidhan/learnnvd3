@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="../css/nv.d3.css">
+	<style type="text/css">
+	#box{width: 50%; height: 300px;}
+	</style>
+	<script type="text/javascript" src="../js/d3.js"></script>
+	<script type="text/javascript" src="../js/nv.d3.js"></script>
+	<script>
+	window.onload = function() {
+		var data = [
+			{
+				'key': '战斗力',
+				'values': [
+					{'x': '狮子', 'y': 10000},
+					{'x': '老虎', 'y': 10000},
+					{'x': '长颈鹿', 'y': 1000},
+					{'x': '山羊', 'y': 500},
+					{'x': '狗', 'y': 2000},
+					{'x': '人类', 'y': -2000}
+				]
+			}
+		];
+		
+		nv.addGraph(function() {
+		    var chart = nv.models.discreteBarChart()
+		        .x(function(d) { return d.x })
+		        .y(function(d) { return d.y })
+		        .staggerLabels(true) // dw+x轴文字错落显示
+		        //.staggerLabels(historicalBarChart[0].values.length > 8)
+		        .showValues(true)
+		        .duration(250)
+		        ;
+
+		    chart.yAxis
+		    	.axisLabel("动物的战斗力");
+
+		    d3.select('#box')
+		    	.append('svg')
+		        .datum(data)
+		        .call(chart);
+
+		    nv.utils.windowResize(chart.update);
+		    return chart;
+		});
+	};
+	</script>
+</head>
+<body>
+<div id="box">
+	 
+</div>
+</body>
+</html>

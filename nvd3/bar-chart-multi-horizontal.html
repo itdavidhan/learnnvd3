@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="../css/nv.d3.css">
+	<style type="text/css">
+	#box{width: 50%; height: 300px;}
+	</style>
+	<script type="text/javascript" src="../js/d3.js"></script>
+	<script type="text/javascript" src="../js/nv.d3.js"></script>
+	<script type="text/javascript">
+		var data = [
+		    {
+		        key: '战斗力',
+		        values: [
+		            {
+		                "label" : "狮子" ,
+		                "value" : 20000
+		            } ,
+		            {
+		                "label" : "老虎" ,
+		                "value" : 22000
+		            } ,
+		            {
+		                "label" : "长颈鹿" ,
+		                "value" : 1000
+		            } ,
+		            {
+		                "label" : "山羊" ,
+		                "value" : 200
+		            } ,
+		            {
+		                "label" : "狗" ,
+		                "value" : 800
+		            } 
+		        ]
+		    },
+		    {
+		        key: '忍耐力',
+		        values: [
+		            {
+		                "label" : "狮子" ,
+		                "value" : 20000
+		            } ,
+		            {
+		                "label" : "老虎" ,
+		                "value" : 20000
+		            } ,
+		            {
+		                "label" : "长颈鹿" ,
+		                "value" : 10000
+		            } ,
+		            {
+		                "label" : "山羊" ,
+		                "value" : 5000
+		            } ,
+		            {
+		                "label" : "狗" ,
+		                "value" : 10000
+		            } 
+		        ]
+		    },
+		    {
+		        key: '忠诚度',
+		        values: [
+		            {
+		                "label" : "狮子" ,
+		                "value" : 20000
+		            } ,
+		            {
+		                "label" : "老虎" ,
+		                "value" : 18000
+		            } ,
+		            {
+		                "label" : "长颈鹿" ,
+		                "value" : 20000
+		            } ,
+		            {
+		                "label" : "山羊" ,
+		                "value" : 22000
+		            } ,
+		            {
+		                "label" : "狗" ,
+		                "value" : 50000
+		            } 
+		        ]
+		    }
+		];
+
+
+		var chart;
+		nv.addGraph(function() {
+		    chart = nv.models.multiBarHorizontalChart()
+		        .x(function(d) { return d.label })
+		        .y(function(d) { return d.value })
+		        .yErr(function(d) { return [-Math.abs(d.value * Math.random() * 0.3), Math.abs(d.value * Math.random() * 0.3)] })
+		        // .barColor(d3.scale.category20().range())
+		        .duration(250)
+		        .showControls(true) // dw+是否显示堆叠控制
+		        .showLegend(true) // dw+是否显示图例
+		        // .legendPosition("bottom")
+		        // .controlsPosition("bottom")
+		        .margin({left: 100})
+		        .stacked(true); // dw+默认显示堆叠
+
+		    chart.yAxis.tickFormat(d3.format(',.2f'));
+
+		    chart.yAxis.axisLabel('Y Axis');
+		    chart.xAxis.axisLabel('X Axis').axisLabelDistance(20);
+
+		    d3.select('#box').append('svg')
+		        .datum(data)
+		        .call(chart);
+
+		    nv.utils.windowResize(chart.update);
+
+		    chart.dispatch.on('stateChange', function(e) { nv.log('New State:', JSON.stringify(e)); });
+		    chart.state.dispatch.on('change', function(state){
+		        nv.log('state', JSON.stringify(state));
+		    });
+		    return chart;
+		});
+	</script>
+</head>
+<body>
+<div id="box"></div>
+</body>
+</html>

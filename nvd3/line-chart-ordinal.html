@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="../css/nv.d3.css">
+	<style type="text/css">
+	#box{width: 500px; height: 300px;}
+	</style>
+	<script type="text/javascript" src="../js/d3.js"></script>
+	<script type="text/javascript" src="../js/nv.d3.js"></script>
+	<script>
+	window.onload = function() {
+		var data = [
+			{
+				'key': '一线天',
+				'values': [
+					{'x': 'a', 'y': 1},
+					{'x': 'b', 'y': 2},
+					{'x': 'c', 'y': 3},
+					{'x': 'd', 'y': 5},
+					{'x': 'e', 'y': 2}
+				]
+			},
+			{
+				'key': '2线天',
+				'values': [
+					{'x': 'a', 'y': 12},
+					{'x': 'b', 'y': 22},
+					{'x': 'c', 'y': 32},
+					{'x': 'd', 'y': 52},
+					{'x': 'e', 'y': 22}
+				]
+			}
+		];
+		var _x = d3.scale.ordinal()
+					.domain(data[0].values.map(function(d) {
+						console.log(d, d.x);
+						return d.x;
+					})).rangeBands([0, 500]);
+		nv.addGraph(function() {
+		    chart = nv.models.lineChart()
+		    	.x(function(d, i) {
+			        return i;
+			    }) 
+		    ;
+
+		    chart.xAxis
+		    	.tickFormat(function(d) {
+		    		// console.log(data[0].values[d]);
+			        return data[0].values[d].x;
+			    })
+		        .axisLabel("Time (s)")
+		        // .tickFormat(d3.format(',.1f'))
+		        // .staggerLabels(true)
+		    ;
+
+		    chart.yAxis
+		        .axisLabel('Voltage (v)')
+		        .tickFormat(function(d) {
+		            if (d == null) {
+		                return 'N/A';
+		            }
+		            return d3.format(',.2f')(d);
+		        })
+		    ;
+
+		    d3.select('#box').append('svg')
+		        .datum(data)
+		        .call(chart);
+
+		    nv.utils.windowResize(chart.update);
+
+		    return chart;
+		});
+	};
+	</script>
+</head>
+<body>
+<div id="box"></div>
+</body>
+</html>
