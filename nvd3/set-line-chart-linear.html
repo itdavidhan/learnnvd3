@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="../css/nv.d3.css">
+	<style type="text/css">
+	#box{width: 50%; height: 300px;}
+	</style>
+	<script type="text/javascript" src="../js/d3.js"></script>
+	<script type="text/javascript" src="../js/nv.d3.js"></script>
+	<script>
+	window.onload = function() {
+		var data = [
+			{
+				'key': '一线天',
+				'values': [
+					{'x': 0, 'y': 1},
+					{'x': 1, 'y': 2},
+					{'x': 2, 'y': 3},
+					{'x': 3, 'y': 5},
+					{'x': 4, 'y': 2}
+				]
+			},
+			{
+				'area': true,
+				'key': '2线天',
+				'values': [
+					{'x': 0, 'y': 3},
+					{'x': 1, 'y': 1},
+					{'x': 2, 'y': 4},
+					{'x': 3, 'y': 3},
+					{'x': 4, 'y': 4}
+				]
+			}
+		];
+		var chart;
+		nv.addGraph({
+			generate: function() {
+			    chart = nv.models.lineChart()
+			        .options({
+			            duration: 300,
+			            useInteractiveGuideline: true
+			        })
+			    ;
+
+			    chart.xAxis
+			        .axisLabel("Time (s)")
+			        .tickFormat(d3.format(',.1f'))
+			        .staggerLabels(true)
+			    ;
+
+			    chart.yAxis
+			        .axisLabel('Voltage (v)')
+			        .tickFormat(function(d) {
+			            if (d == null) {
+			                return 'N/A';
+			            }
+			            return d3.format(',.2f')(d);
+			        })
+			    ;
+
+			    d3.select('#box').append('svg')
+			        .datum(data)
+			        .call(chart);
+
+			    nv.utils.windowResize(chart.update);
+
+			    return chart;
+			},
+			callback: function(graph) {
+				var oBtn1 = document.querySelector('#btn1');
+				oBtn1.onclick = function() {
+					chart.color(['red', 'green']);
+					chart.update();
+				};
+			}
+		});
+	};
+	</script>
+</head>
+<body>
+<a href="javascript:;" id="btn1">change color</a>
+<div id="box"></div>
+</body>
+</html>
