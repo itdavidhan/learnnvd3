@@ -9,80 +9,113 @@
 	<script type="text/javascript" src="../js/d3.js"></script>
 	<script type="text/javascript" src="../js/nv.d3.js"></script>
 	<script type="text/javascript">
+		// var data = [
+		//     {
+		//         key: '战斗力',
+		//         values: [
+		//             {
+		//                 "label" : "狮子" ,
+		//                 "value" : 20000
+		//             } ,
+		//             {
+		//                 "label" : "老虎" ,
+		//                 "value" : 22000
+		//             } ,
+		//             {
+		//                 "label" : "长颈鹿" ,
+		//                 "value" : 1000
+		//             } ,
+		//             {
+		//                 "label" : "山羊" ,
+		//                 "value" : 200
+		//             } ,
+		//             {
+		//                 "label" : "狗" ,
+		//                 "value" : 800
+		//             } 
+		//         ]
+		//     },
+		//     {
+		//         key: '忍耐力',
+		//         values: [
+		//             {
+		//                 "label" : "狮子" ,
+		//                 "value" : 20000
+		//             } ,
+		//             {
+		//                 "label" : "老虎" ,
+		//                 "value" : 20000
+		//             } ,
+		//             {
+		//                 "label" : "长颈鹿" ,
+		//                 "value" : 10000
+		//             } ,
+		//             {
+		//                 "label" : "山羊" ,
+		//                 "value" : 5000
+		//             } ,
+		//             {
+		//                 "label" : "狗" ,
+		//                 "value" : 10000
+		//             } 
+		//         ]
+		//     },
+		//     {
+		//         key: '忠诚度',
+		//         values: [
+		//             {
+		//                 "label" : "狮子" ,
+		//                 "value" : 20000
+		//             } ,
+		//             {
+		//                 "label" : "老虎" ,
+		//                 "value" : 18000
+		//             } ,
+		//             {
+		//                 "label" : "长颈鹿" ,
+		//                 "value" : 20000
+		//             } ,
+		//             {
+		//                 "label" : "山羊" ,
+		//                 "value" : 22000
+		//             } ,
+		//             {
+		//                 "label" : "狗" ,
+		//                 "value" : 50000
+		//             } 
+		//         ]
+		//     }
+		// ];
+
 		var data = [
 		    {
-		        key: '战斗力',
-		        values: [
-		            {
-		                "label" : "狮子" ,
-		                "value" : 20000
-		            } ,
-		            {
-		                "label" : "老虎" ,
-		                "value" : 22000
-		            } ,
-		            {
-		                "label" : "长颈鹿" ,
-		                "value" : 1000
-		            } ,
-		            {
-		                "label" : "山羊" ,
-		                "value" : 200
-		            } ,
-		            {
-		                "label" : "狗" ,
-		                "value" : 800
-		            } 
+		        'key': '北京',
+		        'values': [
+		            {'x': '伯爵红茶', 'y': 11},
+		            {'x': '绿茶', 'y': 12},
+		            {'x': '摩卡', 'y': 13},
+		            {'x': '拿铁', 'y': 15},
+		            {'x': '苦杏咖啡', 'y': 12}
 		        ]
 		    },
 		    {
-		        key: '忍耐力',
-		        values: [
-		            {
-		                "label" : "狮子" ,
-		                "value" : 20000
-		            } ,
-		            {
-		                "label" : "老虎" ,
-		                "value" : 20000
-		            } ,
-		            {
-		                "label" : "长颈鹿" ,
-		                "value" : 10000
-		            } ,
-		            {
-		                "label" : "山羊" ,
-		                "value" : 5000
-		            } ,
-		            {
-		                "label" : "狗" ,
-		                "value" : 10000
-		            } 
+		        'key': '天津',
+		        'values': [
+		            {'x': '伯爵红茶', 'y': 3},
+		            {'x': '绿茶', 'y': 5},
+		            {'x': '摩卡', 'y': 4},
+		            {'x': '拿铁', 'y': 3},
+		            {'x': '苦杏咖啡', 'y': 4}
 		        ]
 		    },
 		    {
-		        key: '忠诚度',
-		        values: [
-		            {
-		                "label" : "狮子" ,
-		                "value" : 20000
-		            } ,
-		            {
-		                "label" : "老虎" ,
-		                "value" : 18000
-		            } ,
-		            {
-		                "label" : "长颈鹿" ,
-		                "value" : 20000
-		            } ,
-		            {
-		                "label" : "山羊" ,
-		                "value" : 22000
-		            } ,
-		            {
-		                "label" : "狗" ,
-		                "value" : 50000
-		            } 
+		        'key': '河北',
+		        'values': [
+		            {'x': '伯爵红茶', 'y': 13},
+		            {'x': '绿茶', 'y': 25},
+		            {'x': '摩卡', 'y': 34},
+		            {'x': '拿铁', 'y': 33},
+		            {'x': '苦杏咖啡', 'y': 24}
 		        ]
 		    }
 		];
@@ -91,10 +124,10 @@
 		var chart;
 		nv.addGraph(function() {
 		    chart = nv.models.multiBarHorizontalChart()
-		        .x(function(d) { return d.label })
-		        .y(function(d) { return d.value })
-		        .yErr(function(d) { return [-Math.abs(d.value * Math.random() * 0.3), Math.abs(d.value * Math.random() * 0.3)] })
-		        // .barColor(d3.scale.category20().range())
+		        .x(function(d) { return d.x })
+		        .y(function(d) { return d.y })
+		        // .yErr(function(d) { return [-Math.abs(d.y * Math.random() * 0.3), Math.abs(d.y * Math.random() * 0.3)] })
+		        .barColor(nv.utils.defaultColor())
 		        .duration(250)
 		        .showControls(true) // dw+是否显示堆叠控制
 		        .showLegend(true) // dw+是否显示图例

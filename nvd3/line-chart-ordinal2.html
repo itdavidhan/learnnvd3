@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="../css/nv.d3.css">
+	<style type="text/css">
+	#box{width: 50%; height: 300px;}
+	</style>
+	<script type="text/javascript" src="../js/d3.js"></script>
+	<script type="text/javascript" src="../js/nv.d3.js"></script>
+	<script>
+	window.onload = function() {
+		var data = [
+			{
+				'key': '1号线',
+				'values': [
+					{'x': 'a', 'y': 1},
+					{'x': 'b', 'y': 2},
+					{'x': 'c', 'y': 3},
+					{'x': 'd', 'y': 5},
+					{'x': 'e', 'y': 2}
+				]
+			},
+			{
+				'key': '2号线',
+				'values': [
+					{'x': 'a', 'y': 3},
+					{'x': 'b', 'y': 1},
+					{'x': 'c', 'y': 4},
+					{'x': 'd', 'y': 3},
+					{'x': 'e', 'y': 4}
+				]
+			},
+			{
+				'key': '3号线',
+				'values': [
+					{'x': 'a', 'y': 3},
+					{'x': 'b', 'y': 7},
+					{'x': 'c', 'y': 5},
+					{'x': 'd', 'y': 4},
+					{'x': 'e', 'y': 6}
+				]
+			},
+			{
+				'key': '4号线',
+				'values': [
+					{'x': 'a', 'y': 6},
+					{'x': 'b', 'y': 7},
+					{'x': 'c', 'y': 9},
+					{'x': 'd', 'y': 4},
+					{'x': 'e', 'y': 2}
+				]
+			} 
+		];
+		nv.addGraph(function() {
+		    chart = nv.models.lineChart()
+		        .options({
+		            duration: 300,
+		            useInteractiveGuideline: true,
+		            interpolate: 'monotone'
+		        })
+		    ;
+
+		    chart.xAxis
+		        .axisLabel("Time (s)")
+		        // .tickFormat(function(d) { return d3.time.format('%Y-%m-%d')(new Date(d)) })
+		        .staggerLabels(true)
+		    ;
+
+		    chart.yAxis
+		        .axisLabel('Voltage (v)')
+		        .tickFormat(function(d) {
+		            if (d == null) {
+		                return 'N/A';
+		            }
+		            return d3.format(',.2f')(d);
+		        })
+		    ;
+
+		    d3.select('#box').append('svg')
+		        .datum(data)
+		        .call(chart);
+
+		    nv.utils.windowResize(chart.update);
+
+		    return chart;
+		});
+	};
+	</script>
+</head>
+<body>
+<div id="box"></div>
+</body>
+</html>
