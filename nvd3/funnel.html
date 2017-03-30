@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta charset="utf-8">
+	<style type="text/css">
+	#box{width: 50%; height: 300px;}
+	</style>
+	<script type="text/javascript" src="../js/d3.js"></script>
+	<script type="text/javascript" src="../js/nv.d3.js"></script>
+	<script type="text/javascript">
+	window.onload = function() {
+		var data = [['Video Views', 1500], ['Comments', 300], ['Video Responses', 150]];
+		var chart = new FunnelChart({
+						data: data,
+						width: 550,
+						height: 350,
+						bottomPct: 1/4
+					});
+		chart.draw('#box');
+	};
+	</script>
+</head>
+<body>
+<div id="box"></div>
+</body>
+</html>
