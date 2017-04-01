@@ -14,12 +14,12 @@
 			{
 				'key': '战斗力',
 				'values': [
-					{'x': '狮子', 'y': 10000},
-					{'x': '老虎', 'y': 10000},
-					{'x': '长颈鹿', 'y': 1000},
-					{'x': '山羊', 'y': 500},
-					{'x': '狗', 'y': 2000},
-					{'x': '人类', 'y': -2000}
+					{'x': '狮子', 'y': '235456'},
+					{'x': '老虎', 'y': '4543'},
+					{'x': '长颈鹿', 'y': '100543'},
+					{'x': '山羊', 'y': '55443'},
+					{'x': '狗', 'y': '200543'},
+					{'x': '人类', 'y': '322767'}
 				]
 			}
 		];
@@ -28,9 +28,11 @@
 		    var chart = nv.models.discreteBarChart()
 		        .x(function(d) { return d.x })
 		        .y(function(d) { return d.y })
-		        .staggerLabels(true) // dw+x轴文字错落显示
+		        // .staggerLabels(true) // dw+x轴文字错落显示
+		        .rotateLabels(45) // dw+标签旋转
 		        //.staggerLabels(historicalBarChart[0].values.length > 8)
-		        .showValues(true)
+		        // .showValues(true)
+		        .showYAxis(true)
 		        .duration(250)
 		        ;
 

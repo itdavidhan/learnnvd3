@@ -4218,7 +4218,9 @@ nv.models.discreteBarChart = function() {
         , color = nv.utils.getColor()
 	, showLegend = false
         , showXAxis = true
+        , showXAxisLine = false
         , showYAxis = true
+        , showYAxisLine = false
         , rightAlignYAxis = false
         , staggerLabels = false
         , wrapLabels = false
@@ -4351,8 +4353,8 @@ nv.models.discreteBarChart = function() {
             if (showXAxis) {
                 xAxis
                     .scale(x)
-                    ._ticks( nv.utils.calcTicksX(availableWidth/100, data) )
-                    .tickSize(-availableHeight, 0);
+                    ._ticks( nv.utils.calcTicksX(availableWidth/100, data) );
+                if(showXAxisLine) xAxis.tickSize(-availableHeight, 0);
 
                 g.select('.nv-x.nv-axis')
                     .attr('transform', 'translate(0,' + (y.range()[0] + ((discretebar.showValues() && y.domain()[0] < 0) ? 16 : 0)) + ')');
@@ -4381,8 +4383,8 @@ nv.models.discreteBarChart = function() {
             if (showYAxis) {
                 yAxis
                     .scale(y)
-                    ._ticks( nv.utils.calcTicksY(availableHeight/36, data) )
-                    .tickSize( -availableWidth, 0);
+                    ._ticks( nv.utils.calcTicksY(availableHeight/36, data) );
+                if(showYAxisLine) yAxis.tickSize( -availableWidth, 0);
 
                 g.select('.nv-y.nv-axis').call(yAxis);
             }
