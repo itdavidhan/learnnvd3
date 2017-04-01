@@ -227,7 +227,7 @@
 			.attr("class", "g2")
 			.attr("transform", function(d, i) { return "translate(" + x0(d.key) + ","+height+")"; })
 			.append("g")
-			.attr("transform", function(d, i) {console.log(d); return "translate(" + x1(d) + "," + height + ")"; })
+			// .attr("transform", function(d, i) {console.log(d); return "translate(" + x1(d) + "," + height + ")"; })
 			.attr("class", "x axis")
 			.call(xAxis1);
 
