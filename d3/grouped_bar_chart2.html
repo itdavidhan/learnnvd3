@@ -186,12 +186,12 @@
 		    .attr("transform", "translate(0," + 0 + ")")
 		    .call(xAxis0);
 
-		svg.append("g").selectAll("g")
-		    .data(_getDataKey(data).key1)
-		    .enter().append("g")
-		    .attr("transform", function(d, i) {console.log(d); return "translate(" + x1(d) + "," + height + ")"; })
-		    .attr("class", "x axis")
-		    .call(xAxis1);
+		// svg.append("g").selectAll("g")
+		//     .data(_getDataKey(data).key1)
+		//     .enter().append("g")
+		//     .attr("transform", function(d, i) {console.log(d); return "translate(" + x1(d) + "," + height + ")"; })
+		//     .attr("class", "x axis")
+		//     .call(xAxis1);
 
 
 		var multiple = svg.selectAll(".multiple")
@@ -219,11 +219,24 @@
 
 		var _g = multiple.append("g").attr("class", "_g");
 
-		_g.selectAll("g")
+		_g.selectAll(".g2")
 			.data(function(data) {
 				return data.dim;
 			})
 			.enter().append("g")
+			.attr("class", "g2")
+			.attr("transform", function(d, i) { return "translate(" + x0(d.key) + ","+height+")"; })
+			.append("g")
+			.attr("transform", function(d, i) {console.log(d); return "translate(" + x1(d) + "," + height + ")"; })
+			.attr("class", "x axis")
+			.call(xAxis1);
+
+		_g.selectAll(".g1")
+			.data(function(data) {
+				return data.dim;
+			})
+			.enter().append("g")
+			.attr("class", "g1")
 			.attr("transform", function(d, i) { return "translate(" + x0(d.key) + ",0)"; })
 			.selectAll("rect")
 			  .data(function(d) { return d.children; })
