@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<style>
+
+	.axis text {
+	  font: 10px sans-serif;
+	}
+
+	.axis path,
+	.axis line {
+	  fill: none;
+	  stroke: #000;
+	  shape-rendering: crispEdges;
+	}
+
+	.x.axis path {
+	  display: none;
+	}
+
+	</style>
+	<script src="../js/d3.js"></script>
+	<script>
+	window.onload = function() {
+
+		var margin = {top: 20, right: 20, bottom: 30, left: 40},
+		    width = 960 - margin.left - margin.right,
+		    height = 500 - margin.top - margin.bottom;
+
+		// dim: 维度， measure: 度量
+		var data = [
+			{
+				measure: '销量',
+				dim: [
+					{
+						key: '东部', 
+						children: [
+							{ key: '凉茶', value: 0.6 },
+							{ key: '绿茶', value: 0.2 },
+							{ key: '红茶', value: 0.2 },
+							{ key: '乌龙茶', value: 0.3 },
+							{ key: '绿豆汤', value: 0.4 }
+						]
+					},
+					{
+						key: '西部', 
+						children: [
+							{ key: '凉茶', value: 0.3 },
+							{ key: '绿茶', value: 0.8 },
+							{ key: '红茶', value: 0.4 },
+							{ key: '乌龙茶', value: 0.1 },
+							{ key: '绿豆汤', value: 0.6 }
+						]
+					},
+					{
+						key: '南部', 
+						children: [
+							{ key: '凉茶', value: 0.3 },
+							{ key: '绿茶', value: 0.4 },
+							{ key: '红茶', value: 0.1 },
+							{ key: '乌龙茶', value: 0.9 },
+							{ key: '绿豆汤', value: 0.8 }
+						]
+					},
+					{
+						key: '北部', 
+						children: [
+							{ key: '凉茶', value: 0.7 },
+							{ key: '绿茶', value: 0.6 },
+							{ key: '红茶', value: 0.8 },
+							{ key: '乌龙茶', value: 0.3 },
+							{ key: '绿豆汤', value: 0.5 }
+						]
+					}
+				]
+			},
+			{
+				measure: '利润',
+				dim: [
+					{
+						key: '东部', 
+						children: [
+							{ key: '凉茶', value: 0.6 },
+							{ key: '绿茶', value: 0.2 },
+							{ key: '红茶', value: 0.2 },
+							{ key: '乌龙茶', value: 0.3 },
+							{ key: '绿豆汤', value: 0.4 }
+						]
+					},
+					{
+						key: '西部', 
+						children: [
+							{ key: '凉茶', value: 0.3 },
+							{ key: '绿茶', value: 0.8 },
+							{ key: '红茶', value: 0.4 },
+							{ key: '乌龙茶', value: 0.1 },
+							{ key: '绿豆汤', value: 0.6 }
+						]
+					},
+					{
+						key: '南部', 
+						children: [
+							{ key: '凉茶', value: 0.3 },
+							{ key: '绿茶', value: 0.4 },
+							{ key: '红茶', value: 0.1 },
+							{ key: '乌龙茶', value: 0.9 },
+							{ key: '绿豆汤', value: 0.8 }
+						]
+					},
+					{
+						key: '北部', 
+						children: [
+							{ key: '凉茶', value: 0.7 },
+							{ key: '绿茶', value: 0.6 },
+							{ key: '红茶', value: 0.8 },
+							{ key: '乌龙茶', value: 0.3 },
+							{ key: '绿豆汤', value: 0.5 }
+						]
+					}
+				]
+			}
+			
+		];
+
+		function _getDataKey(data) {
+			var arr1 = [];
+			var arr2 = [];
+			var arr3 = [];
+
+			data[0].dim.map(function(item) {
+				arr1.push(item.key);
+			});
+
+			data[0].dim[0].children.map(function(item) {
+				arr2.push(item.key);
+			});
+			data.map(function(item) {
+				arr3.push(item.measure); 
+			});
+
+			// console.log(arr1, arr2, arr3);
+			return {key0: arr1, key1: arr2, measure: arr3};
+		}
+
+		// var x = d3.scale.ordinal()
+		//     .domain(_getDataKey(data).key)
+		//     .rangeRoundBands([0, width], .5);
+
+		var x0 = d3.scale.ordinal()
+		    .domain(_getDataKey(data).key0)
+		    .rangeBands([0, width], .2);
+
+		var x1 = d3.scale.ordinal()
+		    .domain(_getDataKey(data).key1)
+		    .rangeBands([0, x0.rangeBand()]);
+
+		var y0 = d3.scale.ordinal()
+		    .domain(_getDataKey(data).measure)
+		    .rangeRoundBands([0, height], .15, 0);
+
+		var y1 = d3.scale.linear()
+		    .domain([0, 1])
+		    .range([y0.rangeBand(), 0]);
+
+		// var color = d3.scale.category10();
+		var z = d3.scale.category10();
+
+		var xAxis0 = d3.svg.axis()
+		    .scale(x0)
+		    .orient("bottom");
+
+		var xAxis1 = d3.svg.axis()
+		    .scale(x1)
+		    .orient("bottom");
+
+		var yAxis = d3.svg.axis()
+		    .scale(y1)
+		    .orient("left")
+		    .ticks(4, "%");
+
+		var svg = d3.select("body").append("svg")
+		    .attr("width", width + margin.left + margin.right)
+		    .attr("height", height + margin.top + margin.bottom)
+		  .append("g")
+		    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+		svg.append("g")
+		    .attr("class", "axis axis--x")
+		    .attr("transform", "translate(0," + height + ")")
+		    .call(xAxis0);
+
+		var multiple = svg.selectAll(".multiple")
+		    .data( data )
+		  .enter().append("g")
+		    .attr("class", "multiple")
+		    .attr("transform", function(d) { return "translate(0," + y0(d.measure) + ")"; });
+
+		multiple.append("g")
+		    .attr("class", "axis axis--y axis--y-inside")
+		    .call(yAxis.tickSize(-width));
+
+		multiple.append("g")
+		    .attr("class", "axis axis--y axis--y-outside")
+		    .call(yAxis.tickSize(6));
+
+		multiple.append("text")
+		    .attr("class", "title")
+		    .attr("transform", "translate(" + (width - 6) + "," + (y0.rangeBand() - 6) + ")")
+		    .style("text-anchor", "end")
+		    .text(function(d) { return d.measure.replace(/-/g, " "); });
+
+		svg.select(".axis--y-outside").append("text")
+		    .attr("x", 3)
+		    .attr("y", y1(y1.ticks(4).pop()))
+		    .attr("dy", ".35em")
+		    .attr("class", "title")
+		    .text("Probability");
+		    console.log('sss', data);
+
+		var _g = multiple.append("g").attr("class", "_g");
+
+		_g.selectAll("g")
+			.data(data[0].dim)
+			.enter().append("g")
+			.attr("transform", function(d, i) { console.log(d); return "translate(" + x0(d.key) + ",0)"; })
+			.selectAll("rect")
+			  .data(function(d) { return d.children; })
+			.enter().append("rect")
+				.style("fill", function(d, i) { return z(i); })
+			  .attr("width", x1.rangeBand())
+			  .attr("height", function(d) {return y0.rangeBand() - y1(d.value);})
+			  .attr("x", function(d, i) { return x1(d.key); })
+			  .attr("y", function(d) { console.log(d); return y1(d.value); });
+
+ 
+
+		      /////////////////////////////////////////////////////////
+
+		function _getDomain(data) {
+			var arr1 = [];
+			var arr2 = [];
+			data[0].children.map(function(item) {
+				arr1.push(item.key);
+			});
+
+			data.map(function(item) {
+				arr2.push(item.key); 
+			});
+			return {v1: arr1, v2: arr2};
+		}
+
+
+		// var margin = {top: 20, right: 30, bottom: 30, left: 40},
+		//     width = 960 - margin.left - margin.right,
+		//     height = 500 - margin.top - margin.bottom;
+
+		// var y = d3.scale.linear()
+		//     .domain([0, 1])
+		//     .range([height, 0]);
+
+		// var x0 = d3.scale.ordinal()
+		//     .domain(_getDomain(data).v2)
+		//     .rangeBands([0, width], .2);
+
+		// var x1 = d3.scale.ordinal()
+		//     .domain(_getDomain(data).v1)
+		//     .rangeBands([0, x0.rangeBand()]);
+
+		// var z = d3.scale.category10();
+
+		// var xAxis0 = d3.svg.axis()
+		//     .scale(x0)
+		//     .orient("top");
+
+		// var xAxis1 = d3.svg.axis()
+		//     .scale(x1)
+		//     .orient("bottom");
+
+		// var yAxis = d3.svg.axis()
+		//     .scale(y)
+		//     .orient("left");
+
+		// var svg = d3.select("body").append("svg")
+		//     .attr("width", width + margin.left + margin.right)
+		//     .attr("height", height + margin.top + margin.bottom)
+		//   .append("svg:g")
+		//     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+		// svg.append("g")
+		//     .attr("class", "y axis")
+		//     .call(yAxis);
+
+		// svg.append("g")
+		//     .attr("class", "x axis")
+		//     .attr("transform", "translate(0," + 0 + ")")
+		//     .call(xAxis0);
+
+		// svg.append("g").selectAll("g")
+		//     .data(data)
+		//     .enter().append("g")
+		//     .attr("transform", function(d, i) { return "translate(" + x0(d.key) + "," + height + ")"; })
+		//     .attr("class", "x axis")
+		//     .call(xAxis1);
+
+		// svg.append("g").selectAll("g")
+		//     .data(data)
+		//   .enter().append("g")
+		//     .attr("transform", function(d, i) { return "translate(" + x0(d.key) + ",0)"; })
+		//   .selectAll("rect")
+		//     .data(function(d) { return d.children; })
+		//   .enter().append("rect")
+		//   	.style("fill", function(d, i) { return z(i); })
+		//     .attr("width", x1.rangeBand())
+		//     .attr("height", function(d) {return y(d.value);})
+		//     .attr("x", function(d, i) { return x1(d.key); })
+		//     .attr("y", function(d) { console.log(d); return height - y(d.value); });
+	};
+	</script>
+</head>
+<body>
+
+</body>
+</html>
