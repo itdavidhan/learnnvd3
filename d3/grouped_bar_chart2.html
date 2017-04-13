@@ -29,7 +29,7 @@
 		    width = 960 - margin.left - margin.right,
 		    height = 500 - margin.top - margin.bottom;
 
-		// dim: 维度， measure: 度量
+		// key: 维度， measure: 度量
 		var data = [
 			{
 				measure: '销量',
@@ -227,7 +227,6 @@
 			.attr("class", "g2")
 			.attr("transform", function(d, i) { return "translate(" + x0(d.key) + ","+height+")"; })
 			.append("g")
-			// .attr("transform", function(d, i) {console.log(d); return "translate(" + x1(d) + "," + height + ")"; })
 			.attr("class", "x axis")
 			.call(xAxis1);
 
