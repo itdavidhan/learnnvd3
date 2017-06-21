@@ -69,6 +69,8 @@
 		        .datum(data)
 		        .call(chart);
 
+		    console.log(chart.update);
+
 		    nv.utils.windowResize(chart.update);
 
 		    chart.dispatch.on('stateChange', function(e) {

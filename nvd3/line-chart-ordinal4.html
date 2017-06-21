@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">	
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="../css/nv.d3.css">
+	<style type="text/css">
+	#box{width: 50%; height: 300px;}
+	</style>
+	<script type="text/javascript" src="../js/d3.js"></script>
+	<script type="text/javascript" src="../js/nv.d3.js"></script>
+	<script>
+	window.onload = function() {
+		var data = [
+			{
+				"color":"#a215af",
+				"key":"products",
+				"values":[
+				    {"x": 0, "y": 0, "text": "Monday"},
+				    {"x": 1, "y": 0, "text": "Tuesday"},
+				    {"x": 2, "y": 1, "text": "Wednesday"},
+				    {"x": 3, "y": 6, "text": "Thursday"},
+				    {"x": 4, "y": 2, "text": "Friday"},
+				    {"x": 5, "y": 0, "text": "Saturday"},
+				    {"x": 6, "y": 13, "text": "Sunday"}
+			    ]
+			},
+			{
+				"color":"#fa2",
+				"key":"products2",
+				"values":[
+				    {"x": 0, "y": 10, "text": "Monday"},
+				    // {"x": 1, "y": 0, "text": ""},
+				    {"x": 2, "y": 4, "text": "Wednesday"},
+				    {"x": 3, "y": 4, "text": "Thursday"},
+				    {"x": 4, "y": 5, "text": "Friday"},
+				    {"x": 5, "y": 6, "text": "Saturday"},
+				    {"x": 6, "y": 3, "text": "Sunday"}
+			    ]
+			}
+		];
+
+		nv.addGraph(function() {
+		  var chart = nv.models.lineChart()
+		    .useInteractiveGuideline(true)  
+		    .x(function(d) { return d.x}) 
+		    .y(function(d) { return d.y}) 
+		    .showLegend(true)
+		    .showYAxis(true)
+		    .showXAxis(true);
+		  
+		  var indexArr = resolveData(data[0].values).indexArr;
+		  var textArr = resolveData(data[0].values).textArr;
+
+		  console.log(indexArr, textArr);
+
+		  chart.xAxis
+		    .tickValues(indexArr)
+		    .tickFormat(function(d){ 
+		      return textArr[d]
+		    });
+
+		  d3.select('#box').append('svg')
+		      .datum(data)
+		      .call(chart);
+
+		  nv.utils.windowResize(chart.update);
+
+		  return chart;
+		});
+
+		function resolveData(arr) {
+			  var indexArr = [];
+			  var textArr = [];
+		    arr.forEach(function(v, i) {
+		    	  indexArr.push(i);
+		    	  textArr.push(v.text);
+		    });
+		    return {
+		    	  indexArr: indexArr,
+		    	  textArr: textArr
+		    }
+		}
+	};
+	</script>
+</head>
+<body>
+<div id="box"></div>
+</body>
+</html>

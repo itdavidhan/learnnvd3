@@ -9,83 +9,7 @@
 	<script type="text/javascript" src="../js/d3.js"></script>
 	<script type="text/javascript" src="../js/nv.d3.js"></script>
 	<script type="text/javascript">
-		// var data = [
-		//     {
-		//         key: '战斗力',
-		//         values: [
-		//             {
-		//                 "label" : "狮子" ,
-		//                 "value" : 20000
-		//             } ,
-		//             {
-		//                 "label" : "老虎" ,
-		//                 "value" : 22000
-		//             } ,
-		//             {
-		//                 "label" : "长颈鹿" ,
-		//                 "value" : 1000
-		//             } ,
-		//             {
-		//                 "label" : "山羊" ,
-		//                 "value" : 200
-		//             } ,
-		//             {
-		//                 "label" : "狗" ,
-		//                 "value" : 800
-		//             } 
-		//         ]
-		//     },
-		//     {
-		//         key: '忍耐力',
-		//         values: [
-		//             {
-		//                 "label" : "狮子" ,
-		//                 "value" : 20000
-		//             } ,
-		//             {
-		//                 "label" : "老虎" ,
-		//                 "value" : 20000
-		//             } ,
-		//             {
-		//                 "label" : "长颈鹿" ,
-		//                 "value" : 10000
-		//             } ,
-		//             {
-		//                 "label" : "山羊" ,
-		//                 "value" : 5000
-		//             } ,
-		//             {
-		//                 "label" : "狗" ,
-		//                 "value" : 10000
-		//             } 
-		//         ]
-		//     },
-		//     {
-		//         key: '忠诚度',
-		//         values: [
-		//             {
-		//                 "label" : "狮子" ,
-		//                 "value" : 20000
-		//             } ,
-		//             {
-		//                 "label" : "老虎" ,
-		//                 "value" : 18000
-		//             } ,
-		//             {
-		//                 "label" : "长颈鹿" ,
-		//                 "value" : 20000
-		//             } ,
-		//             {
-		//                 "label" : "山羊" ,
-		//                 "value" : 22000
-		//             } ,
-		//             {
-		//                 "label" : "狗" ,
-		//                 "value" : 50000
-		//             } 
-		//         ]
-		//     }
-		// ];
+		 
 
 		var data = [
 		    {
@@ -134,7 +58,7 @@
 		        // .legendPosition("bottom")
 		        // .controlsPosition("bottom")
 		        .margin({left: 100})
-		        .stacked(true); // dw+默认显示堆叠
+		        .stacked(false); // dw+默认显示堆叠
 
 		    chart.yAxis.tickFormat(d3.format(',.2f'));
 

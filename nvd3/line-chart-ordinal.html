@@ -32,21 +32,24 @@
 				]
 			}
 		];
-		var _x = d3.scale.ordinal()
-					.domain(data[0].values.map(function(d) {
-						console.log(d, d.x);
-						return d.x;
-					})).rangeBands([0, 500]);
+
+		// var _x = d3.scale.ordinal()
+		// 			.domain(data[0].values.map(function(d) {
+		// 				console.log(d, d.x);
+		// 				return d.x;
+		// 			})).rangeBands([0, 500]);
+
 		nv.addGraph(function() {
 		    chart = nv.models.lineChart()
 		    	.x(function(d, i) {
+		    		// console.log(d, i);
 			        return i;
 			    }) 
 		    ;
 
 		    chart.xAxis
 		    	.tickFormat(function(d) {
-		    		// console.log(data[0].values[d]);
+		    		console.log(data[0].values[d]);
 			        return data[0].values[d].x;
 			    })
 		        .axisLabel("Time (s)")

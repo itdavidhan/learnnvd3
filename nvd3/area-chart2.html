@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" href="../css/nv.d3.css">
+	<style type="text/css">
+	#box{width: 50%; height: 350px; border: 1px solid #EEE;}
+	</style>
+	<script type="text/javascript" src="../js/d3.js"></script>
+	<script type="text/javascript" src="../js/nv.d3.js"></script>
+	<script type="text/javascript">
+	window.onload = function() {
+		var data = [
+			{
+				"color":"#a215af",
+				"key":"products",
+				"values":[
+				    {"x": 0, "y": 1, "text": "Monday"},
+				    {"x": 1, "y": 0, "text": "Tuesday"},
+				    {"x": 2, "y": 1, "text": "Wednesday"},
+				    {"x": 3, "y": 6, "text": "Thursday"},
+				    {"x": 4, "y": 2, "text": "Friday"},
+				    {"x": 5, "y": 0, "text": "Saturday"},
+				    {"x": 6, "y": 13, "text": "Sunday"}
+			    ]
+			},
+			{
+				"color":"#fa2",
+				"key":"products2",
+				"values":[
+				    {"x": 0, "y": 10, "text": "Monday"},
+				    {"x": 1, "y": 0, "text": "Tuesday"},
+				    {"x": 2, "y": 4, "text": "Wednesday"},
+				    {"x": 3, "y": 4, "text": "Thursday"},
+				    {"x": 4, "y": 5, "text": "Friday"},
+				    {"x": 5, "y": 6, "text": "Saturday"},
+				    {"x": 6, "y": 3, "text": "Sunday"}
+			    ]
+			}
+		];
+
+		var chart;
+		nv.addGraph(function() {
+		    chart = nv.models.stackedAreaChart()
+		        .useInteractiveGuideline(true) // dw+是否显示guide参考线
+		        .x(function(d) { return d.x })
+		        .y(function(d) { return d.y })
+		        // .controlLabels({stacked: "Stacked"})
+		        // .color(['red', 'green', 'blue', 'yellow']) // dw+
+		        .duration(300);
+
+		    var indexArr = resolveData(data[0].values).indexArr;
+		    var textArr = resolveData(data[0].values).textArr;
+
+		    console.log(indexArr, textArr);
+
+		    chart.xAxis
+		      .tickValues(indexArr)
+		      .tickFormat(function(d){ 
+		        return textArr[d]
+		      });
+		    chart.yAxis.tickFormat(d3.format(',.4f'));
+
+		    chart.legend.vers('furious');
+
+		    d3.select('#box').append('svg')
+		        .datum(data)
+		        .transition().duration(1000)
+		        .call(chart);
+
+		    nv.utils.windowResize(chart.update);
+		    return chart;
+		});
+
+		function resolveData(arr) {
+			  var indexArr = [];
+			  var textArr = [];
+		    arr.forEach(function(v, i) {
+		    	  indexArr.push(i);
+		    	  textArr.push(v.text);
+		    });
+		    return {
+		    	  indexArr: indexArr,
+		    	  textArr: textArr
+		    }
+		}
+	}
+	</script>
+</head>
+<body class="with-3d-shadow with-transitions">
+<div id="box"></div>
+</body>
+</html>

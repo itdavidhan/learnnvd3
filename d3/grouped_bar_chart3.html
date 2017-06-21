@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<style>
+
+	.axis text {
+	  font: 10px sans-serif;
+	}
+
+	.axis path,
+	.axis line {
+	  fill: none;
+	  stroke: #000;
+	  shape-rendering: crispEdges;
+	}
+
+	.x.axis path {
+	  display: none;
+	}
+
+	</style>
+	<script src="../js/d3.js"></script>
+	<script>
+	window.onload = function() {
+
+		var margin = {top: 20, right: 20, bottom: 30, left: 40},
+		    width = 960 - margin.left - margin.right,
+		    height = 500 - margin.top - margin.bottom;
+
+		var data = [
+			{
+				key: '成本',
+				values: [
+					{
+						key: '东部', 
+						values: [
+							{ x: '凉茶', y: 0.2 },
+							{ x: '绿茶', y: 0.1 },
+							{ x: '红茶', y: 0.2 },
+							{ x: '乌龙茶', y: 0.1 },
+							{ x: '绿豆汤', y: 0.4 }
+						]
+					},
+					{
+						key: '西部', 
+						values: [
+							{ x: '凉茶', y: 0.3 },
+							{ x: '绿茶', y: 0.8 },
+							{ x: '红茶', y: 0.4 },
+							{ x: '乌龙茶', y: 0.1 },
+							{ x: '绿豆汤', y: 0.6 }
+						]
+					},
+					{
+						key: '南部', 
+						values: [
+							{ x: '凉茶', y: 0.3 },
+							{ x: '绿茶', y: 0.4 },
+							{ x: '红茶', y: 0.1 },
+							{ x: '乌龙茶', y: 0.9 },
+							{ x: '绿豆汤', y: 0.8 }
+						]
+					},
+					{
+						key: '北部', 
+						values: [
+							{ x: '凉茶', y: 0.7 },
+							{ x: '绿茶', y: 0.6 },
+							{ x: '红茶', y: 0.8 },
+							{ x: '乌龙茶', y: 0.3 },
+							{ x: '绿豆汤', y: 0.5 }
+						]
+					}
+				]
+			},
+			{
+				key: '利润',
+				values: [
+					{
+						key: '东部', 
+						values: [
+							{ x: '凉茶', y: 0.2 },
+							{ x: '绿茶', y: 0.1 },
+							{ x: '红茶', y: 0.2 },
+							{ x: '乌龙茶', y: 0.1 },
+							{ x: '绿豆汤', y: 0.4 }
+						]
+					},
+					{
+						key: '西部', 
+						values: [
+							{ x: '凉茶', y: 0.3 },
+							{ x: '绿茶', y: 0.8 },
+							{ x: '红茶', y: 0.4 },
+							{ x: '乌龙茶', y: 0.1 },
+							{ x: '绿豆汤', y: 0.6 }
+						]
+					},
+					{
+						key: '南部', 
+						values: [
+							{ x: '凉茶', y: 0.3 },
+							{ x: '绿茶', y: 0.4 },
+							{ x: '红茶', y: 0.1 },
+							{ x: '乌龙茶', y: 0.9 },
+							{ x: '绿豆汤', y: 0.8 }
+						]
+					},
+					{
+						key: '北部', 
+						values: [
+							{ x: '凉茶', y: 0.7 },
+							{ x: '绿茶', y: 0.6 },
+							{ x: '红茶', y: 0.8 },
+							{ x: '乌龙茶', y: 0.3 },
+							{ x: '绿豆汤', y: 0.5 }
+						]
+					}
+				]
+			}
+			
+		];
+
+		function _getDataKey(data) {
+			// 维度1
+			var arr1 = [];
+			// 维度2
+			var arr2 = [];
+			// 度量
+			var arr3 = [];
+
+			data[0].values.map(function(item) { 
+				arr1.push(item.key);
+			});
+
+			data[0].values[0].values.map(function(item) { 
+				arr2.push(item.x);
+			});
+			data.map(function(item) {
+				arr3.push(item.key); 
+			});
+
+			// console.log(arr1, arr2, arr3);
+			return {key0: arr1, key1: arr2, measure: arr3};
+		}  
+
+		var x0 = d3.scale.ordinal()
+		    .domain(_getDataKey(data).key0)
+		    .rangeBands([0, width], .2);
+
+		var x1 = d3.scale.ordinal()
+		    .domain(_getDataKey(data).key1)
+		    .rangeBands([0, x0.rangeBand()]);
+
+		var y0 = d3.scale.ordinal()
+		    .domain(_getDataKey(data).measure)
+		    .rangeRoundBands([0, height], .15, 0);
+
+		var y1 = d3.scale.linear()
+		    .domain([0, 1])
+		    .range([y0.rangeBand(), 0]);
+
+		var z = d3.scale.category10();
+
+		var xAxis0 = d3.svg.axis()
+		    .scale(x0)
+		    .orient("top");
+
+		var xAxis1 = d3.svg.axis()
+		    .scale(x1)
+		    .orient("bottom");
+
+		var yAxis = d3.svg.axis()
+		    .scale(y1)
+		    .orient("left")
+		    .ticks(4, "%");
+
+		var svg = d3.select("body").append("svg")
+		    .attr("width", width + margin.left + margin.right)
+		    .attr("height", height + margin.top + margin.bottom)
+		  .append("g")
+		    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+		svg.append("g")
+		    .attr("class", "axis axis--x")
+		    .attr("transform", "translate(0," + 0 + ")")
+		    .call(xAxis0);
+
+		// svg.append("g").selectAll("g")
+		//     .data(_getDataKey(data).key1)
+		//     .enter().append("g")
+		//     .attr("transform", function(d, i) {console.log(d); return "translate(" + x1(d) + "," + height + ")"; })
+		//     .attr("class", "x axis")
+		//     .call(xAxis1);
+
+
+		var multiple = svg.selectAll(".multiple")
+		    .data( data )
+		  .enter().append("g")
+		    .attr("class", "multiple")
+		    .attr("transform", function(d) { return "translate(0," + y0(d.key) + ")"; });
+
+		multiple.append("g")
+		    .attr("class", "axis axis--y axis--y-inside")
+		    .call(yAxis.tickSize(-width));
+
+		multiple.append("text")
+		    .attr("class", "title")
+		    .attr("transform", "translate(" + (width - 6) + "," + (y0.rangeBand() - 6) + ")")
+		    .style("text-anchor", "end")
+		    .text(function(d) { return d.key.replace(/-/g, " "); });
+
+		svg.select(".axis--y-outside").append("text")
+		    .attr("x", 3)
+		    .attr("y", y1(y1.ticks(4).pop()))
+		    .attr("dy", ".35em")
+		    .attr("class", "title")
+		    .text("Probability");
+
+		var _g = multiple.append("g").attr("class", "_g");
+
+		_g.selectAll(".g2")
+			.data(function(data) { 
+				return data.values;
+			})
+			.enter().append("g")
+			.attr("class", "g2")
+			.attr("transform", function(d, i) {return "translate(" + x0(d.key) + ","+height+")"; })
+			.append("g")
+			.attr("class", "x axis")
+			.call(xAxis1);
+
+		_g.selectAll(".g1")
+			.data(function(data) {
+				return data.values;
+			})
+			.enter().append("g")
+			.attr("class", "g1")
+			.attr("transform", function(d, i) { return "translate(" + x0(d.key) + ",0)"; })
+			.selectAll("rect")
+			  .data(function(d) { return d.values; })
+			.enter().append("rect")
+				.style("fill", function(d, i) { return z(i); })
+			  .attr("width", x1.rangeBand())
+			  .attr("height", function(d) { return y0.rangeBand() - y1(d.y);})
+			  .attr("x", function(d, i) { return x1(d.x); })
+			  .attr("y", function(d) { return y1(d.y); });
+
+		 
+
+	};
+	</script>
+</head>
+<body>
+
+</body>
+</html>

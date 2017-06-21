@@ -888,7 +888,7 @@ nv.utils.windowSize = function() {
     // Most recent browsers use
     if (window.innerWidth && window.innerHeight) {
         size.width = window.innerWidth;
-        size.height = window.innerHeight;
+        size.height = window.innerHeight; 
         return (size);
     }
 
@@ -1593,7 +1593,8 @@ nv.models.axis = function() {
     //------------------------------------------------------------
 
     var axis = d3.svg.axis();
-    var scale = d3.scale.linear();
+    var scale = d3.scale.linear();  
+    // var scale = d3.scale.ordinal();    // dw+
 
     var margin = {top: 0, right: 0, bottom: 0, left: 0}
         , width = 75 //only used for tickLabel currently
@@ -4224,18 +4225,21 @@ nv.models.discreteBarChart = function() {
         , rightAlignYAxis = false
         , staggerLabels = false
         , wrapLabels = false
-        , rotateLabels = 0
+        , rotateLabels = 0 
         , x
         , y
         , noData = null
         , dispatch = d3.dispatch('beforeUpdate','renderEnd')
         , duration = 250
-        ;
-
+        ; 
     xAxis
         .orient('bottom')
-        .showMaxMin(false)
-        .tickFormat(function(d) { return d })
+        .showMaxMin(false) 
+        .tickFormat(function(d, i) {
+            if(!(i%1)) { 
+                return d;
+            } 
+        })
     ;
     yAxis
         .orient((rightAlignYAxis) ? 'right' : 'left')
@@ -4256,11 +4260,10 @@ nv.models.discreteBarChart = function() {
     // Private Variables
     //------------------------------------------------------------
 
-    var renderWatch = nv.utils.renderWatch(dispatch, duration);
-
-    function chart(selection) {
+    var renderWatch = nv.utils.renderWatch(dispatch, duration);  
+    function chart(selection) { 
         renderWatch.reset();
-        renderWatch.models(discretebar);
+        renderWatch.models(discretebar); 
         if (showXAxis) renderWatch.models(xAxis);
         if (showYAxis) renderWatch.models(yAxis);
 
@@ -4271,7 +4274,7 @@ nv.models.discreteBarChart = function() {
             var availableWidth = nv.utils.availableWidth(width, container, margin),
                 availableHeight = nv.utils.availableHeight(height, container, margin);
 
-            chart.update = function() {
+            chart.update = function() { 
                 dispatch.beforeUpdate();
                 container.transition().duration(duration).call(chart);
             };
@@ -4293,7 +4296,7 @@ nv.models.discreteBarChart = function() {
             var wrap = container.selectAll('g.nv-wrap.nv-discreteBarWithAxes').data([data]);
             var gEnter = wrap.enter().append('g').attr('class', 'nvd3 nv-wrap nv-discreteBarWithAxes').append('g');
             var defsEnter = gEnter.append('defs');
-            var g = wrap.select('g');
+            var g = wrap.select('g'); 
 
             gEnter.append('g').attr('class', 'nv-x nv-axis');
             gEnter.append('g').attr('class', 'nv-y nv-axis')
@@ -4328,7 +4331,7 @@ nv.models.discreteBarChart = function() {
                 g.select(".nv-y.nv-axis")
                     .attr("transform", "translate(" + availableWidth + ",0)");
             }
-
+            
             // Main Chart Component(s)
             discretebar
                 .width(availableWidth)
@@ -4349,10 +4352,41 @@ nv.models.discreteBarChart = function() {
                 .attr('height', 16)
                 .attr('x', -x.rangeBand() / (staggerLabels ? 1 : 2 ));
 
+            // var _DWNUM = 1;
+            // var _DWWIDTH = availableWidth;
+            // var _DWLENGTH = data[0].values.length;
+
+            // setDWNUM(_DWWIDTH, _DWLENGTH);
+
+            // function setDWNUM(width, len) { 
+
+            //     var division = width/len; 
+            //     var flag = 60;
+            //     var count = division/flag;
+
+            //     if(count >= 1) {
+            //         _DWNUM = 1;
+            //     } else {
+            //         _DWNUM = Math.round( len/count/10 );
+            //     } 
+            //     console.log('_DWNUM=>', _DWNUM);
+            // }
+
+            
             // Setup Axes
-            if (showXAxis) {
+            if (showXAxis) {  
                 xAxis
                     .scale(x)
+                    .tickFormat(function(d, i) {  
+                        if(i % Math.ceil(data[0].values.length / (availableWidth / 100)) == 0) {
+                            return d;
+                        }
+                    })
+                    // .tickFormat(function(d, i) {  
+                    //     if(!(i%_DWNUM)) { 
+                    //         return d;
+                    //     } 
+                    // })
                     ._ticks( nv.utils.calcTicksX(availableWidth/100, data) );
                 if(showXAxisLine) xAxis.tickSize(-availableHeight, 0);
 
@@ -4377,7 +4411,8 @@ nv.models.discreteBarChart = function() {
                 if (wrapLabels) {
                     g.selectAll('.tick text')
                         .call(nv.utils.wrapTicks, chart.xAxis.rangeBand())
-                }
+                } 
+                 
             }
 
             if (showYAxis) {
@@ -6511,7 +6546,7 @@ nv.models.line = function() {
         , container = null
         , strokeWidth = 1.5
         , color = nv.utils.defaultColor() // a function that returns a color
-        , getX = function(d) { return d.x } // accessor to get the x value from a data point
+        , getX = function(d) { console.log(d); return d.x } // accessor to get the x value from a data point
         , getY = function(d) { return d.y } // accessor to get the y value from a data point
         , defined = function(d,i) { return !isNaN(getY(d,i)) && getY(d,i) !== null } // allows a line to be not continuous when it is not defined
         , isArea = function(d) { return d.area } // decides if a line is an area or just a line
@@ -6931,7 +6966,6 @@ nv.models.lineChart = function() {
             var linesWrap = g.select('.nv-linesWrap')
                 .datum(data.filter(function(d) { return !d.disabled; }));
 
-
             // Setup Main (Focus) Axes
             if (showXAxis) {
                 xAxis
@@ -6951,7 +6985,7 @@ nv.models.lineChart = function() {
             // Update Axes
             //============================================================
             function updateXAxis() {
-              if(showXAxis) {
+              if(showXAxis) { 
                 g.select('.nv-focus .nv-x.nv-axis')
                   .transition()
                   .duration(duration)
@@ -6977,7 +7011,7 @@ nv.models.lineChart = function() {
             // Update Focus
             //============================================================
             if(!focusEnable) {
-                linesWrap.call(lines);
+                linesWrap.call(lines); 
                 updateXAxis();
                 updateYAxis();
             } else {
@@ -7123,7 +7157,7 @@ nv.models.lineChart = function() {
                     + 'V' + (2 * y - 8);
             }
 
-            function onBrush(extent) {
+            function onBrush(extent) { 
                 // Update Main (Focus)
                 var focusLinesWrap = g.select('.nv-focus .nv-linesWrap')
                     .datum(
