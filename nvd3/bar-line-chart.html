@@ -55,57 +55,57 @@
 
     // console.log(testdata);
 
-    // var testdata = [
-    //     {
-    //         'bar': true,
-    //         'key': 'aaaa',
-    //         'values': [
-    //             {'x': 1136005200000, 'y': 1000},
-    //             {'x': 12136005200000, 'y': 1100},
-    //             {'x': 1336005200000, 'y': 2000},
-    //             {'x': 1436005200000, 'y': 5000},
-    //             {'x': 1536005200000, 'y': 2000},
-    //             {'x': 1636005200000, 'y': 300}
-    //         ]
-    //     },
-    //     {
-    //        'key': 'bbbb',
-    //        'values': [
-    //            {'x': 1136005200000, 'y': 10},
-    //            {'x': 1236005200000, 'y': 11},
-    //            {'x': 1336005200000, 'y': 20},
-    //            {'x': 1436005200000, 'y': 50},
-    //            {'x': 1536005200000, 'y': 20},
-    //            {'x': 1636005200000, 'y': 3}
-    //        ] 
-    //     }
-    // ];
-
     var testdata = [
         {
             'bar': true,
             'key': 'aaaa',
             'values': [
-                {'x': '2012年', 'y': 1000},
-                {'x': '2013年', 'y': 1100},
-                {'x': '2014年', 'y': 2000},
-                {'x': '2015年', 'y': 5000},
-                {'x': '2016年', 'y': 2000},
-                {'x': '2017年', 'y': 300}
+                {'x': 1136005200000, 'y': 1000},
+                {'x': 1213600520000, 'y': 1100},
+                {'x': 1336005200000, 'y': 2000},
+                {'x': 1436005200000, 'y': 5000},
+                {'x': 1536005200000, 'y': 2000},
+                {'x': 1636005200000, 'y': 300}
             ]
         },
         {
            'key': 'bbbb',
            'values': [
-               {'series': 0, 'x': '2012年', 'y': 1000},
-               {'series': 0, 'x': '2013年', 'y': 1100},
-               {'series': 0, 'x': '2014年', 'y': 2000},
-               {'series': 0, 'x': '2015年', 'y': 5000},
-               {'series': 0, 'x': '2016年', 'y': 2000},
-               {'series': 0, 'x': '2017年', 'y': 300}
+               {'x': 1136005200000, 'y': 10},
+               {'x': 1213600520000, 'y': 11},
+               {'x': 1336005200000, 'y': 20},
+               {'x': 1436005200000, 'y': 50},
+               {'x': 1536005200000, 'y': 20},
+               {'x': 1636005200000, 'y': 3}
            ] 
         }
     ];
+
+    // var testdata = [
+    //     {
+    //         'bar': true,
+    //         'key': 'aaaa',
+    //         'values': [
+    //             {'x': '2012年', 'y': 13000},
+    //             {'x': '2013年', 'y': 13100},
+    //             {'x': '2014年', 'y': 23000},
+    //             {'x': '2015年', 'y': 53000},
+    //             {'x': '2016年', 'y': 23000},
+    //             {'x': '2017年', 'y': 33300}
+    //         ]
+    //     },
+    //     {
+    //        'key': 'bbbb',
+    //        'values': [
+    //            {'series': 0, 'x': '2012年', 'y': 1000},
+    //            {'series': 0, 'x': '2013年', 'y': 1100},
+    //            {'series': 0, 'x': '2014年', 'y': 2000},
+    //            {'series': 0, 'x': '2015年', 'y': 5000},
+    //            {'series': 0, 'x': '2016年', 'y': 2000},
+    //            {'series': 0, 'x': '2017年', 'y': 300}
+    //        ] 
+    //     }
+    // ];
 
     var chart;
     nv.addGraph(function() {
@@ -116,19 +116,19 @@
 
         chart.xAxis.tickFormat(function(d) { 
             console.log(d);
-            return d 
+            return d; 
         });
 
         // chart.xAxis.tickFormat(function(d) {
         //     return d3.time.format('%x')(new Date(d))
         // }).showMaxMin(false);
 
-        // chart.y2Axis.tickFormat(function(d) { return '$' + d3.format(',f')(d) });
-        // chart.bars.forceY([0]).padData(false);
+        chart.y2Axis.tickFormat(function(d) { return '$' + d3.format(',f')(d) });
+        chart.bars.forceY([0]).padData(false);
 
-        // chart.x2Axis.tickFormat(function(d) {
-        //     return d3.time.format('%x')(new Date(d))
-        // }).showMaxMin(false);
+        chart.x2Axis.tickFormat(function(d) {
+            return d3.time.format('%x')(new Date(d))
+        }).showMaxMin(false);
 
         d3.select('#chart1 svg')
             .datum(testdata)

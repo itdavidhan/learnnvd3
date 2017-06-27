@@ -15,7 +15,7 @@
 			{
 				'key': '战斗力',
 				'values': [
-					{'x': 2, 'y': 4, 'info': '1111'},
+					{'x': 0, 'y': 4, 'info': '1111'},
 					{'x': 4, 'y': 5, 'info': '1111'},
 					{'x': 5, 'y': 8, 'info': '1111'},
 					{'x': 7, 'y': 6, 'info': '1111'},
@@ -31,6 +31,26 @@
 					{'x': 17, 'y': 6, 'size': 3},
 					{'x': 19, 'y': 7, 'size': 5}
 				]
+			},
+			{
+				'key': '战斗力2',
+				'values': [
+					{'x': 0, 'y': 6, 'info': '1111'},
+					{'x': 4, 'y': 5, 'info': '1111'},
+					{'x': 5, 'y': 8, 'info': '1111'},
+					{'x': 7, 'y': 6, 'info': '1111'},
+					{'x': 9, 'y': 7, 'info': '1111'}
+				]
+			},
+			{
+				'key': '忍耐力3',
+				'values': [
+					{'x': 12, 'y': 7, 'size': 2},
+					{'x': 14, 'y': 5, 'size': 3},
+					{'x': 15, 'y': 18, 'size': 3},
+					{'x': 17, 'y': 6, 'size': 3},
+					{'x': 19, 'y': 7, 'size': 5}
+				]
 			}
 		];
 
@@ -39,15 +59,19 @@
 		    chart = nv.models.scatterChart()
 		        .showDistX(true)
 		        .showDistY(true)
-		        .useVoronoi(true)
+		        // .useVoronoi(true)
 		        // .color(d3.scale.category10().range())
-		        .duration(300)
+		        .duration(300) 
 		    ;
 		    chart.dispatch.on('renderEnd', function(){
 		        console.log('render complete');
 		    });
 
-		    chart.xAxis.axisLabel('Voltage (v)').tickFormat(d3.format('.02f'));
+		    chart
+		    	.xAxis
+		    	.domain([0, 100])
+		    	.axisLabel('Voltage (v)')
+		    	.tickFormat(d3.format('.02f'));
 		    chart.yAxis.axisLabel('Voltage (v)').tickFormat(d3.format('.02f'));
 
 		    d3.select('#box').append('svg')

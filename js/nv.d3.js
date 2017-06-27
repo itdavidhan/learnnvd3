@@ -1678,7 +1678,7 @@ nv.models.axis = function() {
                         .attr('text-anchor', 'middle')
                         .attr('y', 0)
                         .attr('x', w/2);
-                    if (showMaxMin) {
+                    if (showMaxMin) { 
                         axisMaxMin = wrap.selectAll('g.nv-axisMaxMin')
                             .data(scale.domain());
                         axisMaxMin.enter().append('g').attr('class',function(d,i){
@@ -6546,7 +6546,7 @@ nv.models.line = function() {
         , container = null
         , strokeWidth = 1.5
         , color = nv.utils.defaultColor() // a function that returns a color
-        , getX = function(d) { console.log(d); return d.x } // accessor to get the x value from a data point
+        , getX = function(d) { return d.x } // accessor to get the x value from a data point
         , getY = function(d) { return d.y } // accessor to get the y value from a data point
         , defined = function(d,i) { return !isNaN(getY(d,i)) && getY(d,i) !== null } // allows a line to be not continuous when it is not defined
         , isArea = function(d) { return d.area } // decides if a line is an area or just a line
@@ -13184,7 +13184,7 @@ nv.models.scatterChart = function() {
     //------------------------------------------------------------
 
     var scatter      = nv.models.scatter()
-        , xAxis        = nv.models.axis()
+        , xAxis        = nv.models.axis() 
         , yAxis        = nv.models.axis()
         , legend       = nv.models.legend()
         , distX        = nv.models.distribution()
@@ -13198,7 +13198,7 @@ nv.models.scatterChart = function() {
         , height       = null
         , container    = null
         , color        = nv.utils.defaultColor()
-        , x            = scatter.xScale()
+        , x            = scatter.xScale() 
         , y            = scatter.yScale()
         , showDistX    = false
         , showDistY    = false
@@ -13213,7 +13213,7 @@ nv.models.scatterChart = function() {
         , duration = 250
         , showLabels    = false
         ;
-
+     
     scatter.xScale(x).yScale(y);
     xAxis.orient('bottom').tickPadding(10);
     yAxis
