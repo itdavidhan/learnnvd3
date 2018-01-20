@@ -10,12 +10,15 @@
 	<script type="text/javascript" src="../js/nv.d3.js"></script>
 	<script type="text/javascript">
 	window.onload = function() {
-		var data = [['Video Views', 1500], ['Comments', 300], ['Video Responses', 150]];
+		var data = [
+			['Video Views', 1500], ['Comments', 0], ['Video Responses', 150],
+			['Video Views2', 1500], ['Comments2', 300], ['Video Responses2', 150]
+		];
 		var chart = new FunnelChart({
 						data: data,
 						width: 550,
-						height: 350,
-						bottomPct: 1/4
+						// height: 350,
+						bottomPct: 1/5
 					});
 		chart.draw('#box');
 	};

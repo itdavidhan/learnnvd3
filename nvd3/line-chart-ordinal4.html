@@ -64,6 +64,14 @@
 		      .datum(data)
 		      .call(chart);
 
+		  var point = d3.select('#box').selectAll('.nv-point');
+
+		  console.log('point', point);
+
+		  point.on('click', function(d) {
+		  	console.log(d);
+		  });
+
 		  nv.utils.windowResize(chart.update);
 
 		  return chart;

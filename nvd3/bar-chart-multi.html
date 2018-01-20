@@ -5,6 +5,9 @@
 	<link rel="stylesheet" type="text/css" href="../css/nv.d3.css">
 	<style type="text/css">
 	#box{width: 50%; height: 300px;}
+	.red {
+		fill: red !important;
+	}
 	</style>
 	<script type="text/javascript" src="../js/d3.js"></script>
 	<script type="text/javascript" src="../js/nv.d3.js"></script>
@@ -25,7 +28,7 @@
 				'key': '利润',
 				'values': [
 					{'x': 'a', 'y': 3},
-					{'x': 'b', 'y': -5},
+					{'x': 'b', 'y': -1},
 					{'x': 'c', 'y': 4},
 					{'x': 'd', 'y': 3},
 					{'x': 'e', 'y': 4}
@@ -42,6 +45,7 @@
 		        .margin({bottom: 100, left: 70})
 		        .rotateLabels(45) // dw+标签旋转
 		        .groupSpacing(0.1) // dw+分组间距
+		        .stacked(true)
 		    ;
 
 		    chart.reduceXTicks(false).staggerLabels(true);
@@ -78,13 +82,21 @@
 		        nv.log('state', JSON.stringify(state));
 		    });
 
+		    var _bar = d3.select('#box').selectAll('.nv-bar');
+	    	_bar.on('click', function(d, i) {
+	    		console.log(d, i);
+	    		console.log('chart-id', d3.select('#box').attr('data-chart-id'));
+	    		_bar.classed('red', false);
+	    		d3.select(this).classed('red', true);
+	    	});
+
 		    return chart;
 		});
 	};
 	</script>
 </head>
 <body>
-<div id="box">
+<div id="box" data-chart-id="330">
 	 
 </div>
 </body>

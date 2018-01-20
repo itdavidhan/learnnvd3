@@ -81,8 +81,45 @@
 			},
 			callback: function(graph) {
 				var oBtn1 = document.querySelector('#btn1');
+
+				var data2 = [
+					{
+						'key': '一线天2',
+						'values': [
+							{'x': 0, 'y': 1},
+							{'x': 1, 'y': 2},
+							{'x': 2, 'y': 3},
+							{'x': 3, 'y': 5},
+							{'x': 4, 'y': 2}
+						]
+					},
+					{
+						// 'area': true,
+						'key': '2线天2',
+						'values': [
+							{'x': 0, 'y': 3},
+							{'x': 1, 'y': 1},
+							{'x': 2, 'y': 4},
+							{'x': 3, 'y': 3},
+							{'x': 4, 'y': 4}
+						]
+					},
+					{
+						// 'area': true,
+						'key': '三胖子2',
+						'values': [
+							{'x': 0, 'y': 6},
+							{'x': 1, 'y': 7},
+							{'x': 2, 'y': 3},
+							{'x': 3, 'y': 6},
+							{'x': 4, 'y': 2}
+						]
+					}
+				];
+
 				oBtn1.onclick = function() {
-					chart.color(['red', 'green', 'yellow'])
+					chart
+						.color(['red', 'green', 'yellow'])
 						.interpolate('monotone')
 						.update();
 				};

@@ -13,8 +13,8 @@
 		var data = [
 			 
 			{'x': '狮子', 'y': 20000},
-			{'x': '老虎', 'y': 20000},
-			{'x': '长颈鹿', 'y': 5000},
+			{'x': '老虎', 'y': -20000},
+			{'x': '长颈鹿', 'y': 0},
 			{'x': '山羊', 'y': 2000},
 			{'x': '狗', 'y': 10000}
 			 
@@ -31,6 +31,8 @@
 		        // .height(_h)
 		        .showTooltipPercent(true);
 
+		    console.log(chart.dispatch);
+
 		    d3.select("#box")
 		    	.append('svg')
 		        .datum(data)
@@ -38,6 +40,11 @@
 		        // .attr('width', _w)
 		        // .attr('height', _h)
 		        .call(chart);
+
+		    d3.select('#box').selectAll('.nv-slice')
+		    	.on('click', function(d, i) {
+		    		console.log(d, i);
+		    	});
 
 		    return chart;
 		});

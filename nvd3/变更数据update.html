@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="../css/nv.d3.css">
+    <style type="text/css">
+        #economyChart {
+            width: 50%;
+            height: 400px;
+            border: 1px solid #DDD;
+        }
+    </style>
+    <script type="text/javascript" src="../js/d3.js"></script>
+    <script type="text/javascript" src="../js/nv.d3.js"></script>
+    <script type="text/javascript">
+        window.onload = function() {
+            // Maintian an instance of the chart and 
+            var chart;
+
+            // Maintain an Instance of the SVG selection with its data
+            var chartData;
+
+            nv.addGraph(function () {
+                chart = nv.models.lineChart().margin({
+                    top: 5,
+                    right: 10,
+                    bottom: 38,
+                    left: 10
+                }).color(["lightgrey", "rgba(242,94,34,0.58)"])
+                    .useInteractiveGuideline(false)
+                    .showLegend(true).showYAxis(false)
+                    .showXAxis(true).forceY([0.4, 1.6]);
+
+                chart.xAxis.tickFormat(d3.format('d')).axisLabel("Rounds");
+                chart.yAxis.tickFormat(d3.format('0.1f'));
+
+                var data = economyData();
+
+                // Assign the SVG selction
+                chartData = d3.select('#economyChart svg').datum(data);
+                chartData.transition().duration(500).call(chart);
+
+                nv.utils.windowResize(chart.update);
+
+                return chart;
+            });
+
+            function update() {
+                var data = economyData();
+
+                // Update the SVG with the new data and call chart
+                chartData.datum(data).transition().duration(5000).call(chart);
+                nv.utils.windowResize(chart.update);
+            };
+
+            // Update the CHART
+            d3.select("#update").on("click", update);
+
+            // Data Calc
+            function economyData() {
+                // Your economyData code
+                // ....
+                var numRounds = 10;
+
+                // Stability of economy
+                var stable = 0.2,
+                    unstable = 0.6;
+                var stability = unstable;
+
+                // Type of economy
+                var boom = 0.02,
+                    flat = 0,
+                    poor = -0.02,
+                    economyTrend = boom;
+
+                // Range
+                var start = 1,
+                    max = start + stability,
+                    min = start - stability;
+
+                // Arrays
+                var baseLine = [],
+                    economy = [];
+
+                // Loop
+                for (var i = 0; i < numRounds + 1; i++) {
+
+                    baseLine.push({
+                        x: i,
+                        y: 1
+                    });
+
+                    if (i == 0) {
+                        economyValue = 1;
+                    } else {
+                        var curve = Math.min(Math.max(start + ((Math.random() - 0.5) * stability), min), max);
+                        economyValue = Math.round(((1 + (economyTrend * i)) * curve) * 100) / 100;
+                    }
+
+                    economy.push({
+                        x: i,
+                        y: economyValue
+                    });
+                }
+
+                return [{
+                    key: 'Base Line',
+                    values: baseLine
+                }, {
+                    key: 'Economy',
+                    values: economy
+                }];
+            }
+        };
+    </script>
+</head>
+<body>
+    <button id="update">Refresh Page</button>
+    <br>
+    <div id="economyChart">
+        <svg></svg>
+    </div>
+</body>
+</html>

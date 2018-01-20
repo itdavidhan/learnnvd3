@@ -4077,6 +4077,7 @@ nv.models.discreteBar = function() {
                     });
                 })
                 .on('click', function(d,i) {
+                    console.log(d, i);
                     var element = this;
                     dispatch.elementClick({
                         data: d,
@@ -15458,6 +15459,7 @@ nv.models.sunburstChart = function() {
 };
 
 (function(){
+
   var DEFAULT_HEIGHT = 400,
       DEFAULT_WIDTH = 600,
       DEFAULT_BOTTOM_PERCENT = 1/3;
@@ -15475,7 +15477,21 @@ nv.models.sunburstChart = function() {
         This is used to calculate the slope, so the chart's view can be changed by changing this value
     */
 
+    // 非数字或者0，剔除
+    for(var i=0; i<options.data.length; i++) {
+        var n = options.data[i][1];
+        if(typeof n !== 'number' || n == 0) {
+            options.data.splice(i, 1);
+            i--;
+        }
+    }
+
     this.data = options.data;
+
+    // 转化率
+    this.conversion = getConversion(options.data);
+    console.log('this.conversion', this.conversion);
+
     this.totalEngagement = 0;
     for(var i = 0; i < this.data.length; i++){
       this.totalEngagement += this.data[i][1];
@@ -15485,7 +15501,37 @@ nv.models.sunburstChart = function() {
     var bottomPct = typeof options.bottomPct !== 'undefined' ? options.bottomPct : DEFAULT_BOTTOM_PERCENT;
     this._slope = 2*this.height/(this.width - bottomPct*this.width);
     this._totalArea = (this.width+bottomPct*this.width)*this.height/2;
+
+    this.x = this.width * 0.15+80;
+    this.y = 0;
+    // this.y = this.height * 0.15;
+
+    // 获取转化率
+    function getConversion(data) {
+        var arr = [];
+        var _arr = [];
+        var len = data.length - 1;
+        // 整理数组格式
+        for(var i=0; i<data.length; i++) {
+            arr[i] = isNaN(parseFloat(data[i][1])) ? 0 : parseFloat(data[i][1]);
+        }
+
+        // arr[i+1] / arr[i]
+        for(var i=0; i<len; i++) _arr.push(arr[i+1] / arr[i]);
+
+        // 转化为百分比，保留2位小数
+        for(var i=0; i<_arr.length; i++) {
+            _arr[i] = (_arr[i] * 100).toFixed(2) + '%';
+        }
+
+        return _arr;
+    }
+
   };
+
+  window.FunnelChart.prototype._getConversion = function(ind) {
+    return this.conversion[ind];
+  }
 
   window.FunnelChart.prototype._getLabel = function(ind){
     /* Get label of a category at index 'ind' in this.data */
@@ -15532,9 +15578,10 @@ nv.models.sunburstChart = function() {
     speed = typeof speed !== 'undefined' ? speed : DEFAULT_SPEED;
 
     var funnelSvg = d3.select(elem).append('svg:svg')
-              .attr('width', this.width)
+              .attr('width', this.width+60)
               .attr('height', this.height)
-              .append('svg:g');
+              .append('svg:g')
+              .attr('style', 'transform: translate(' + this.x + 'px,' + this.y + 'px);');
 
     // Creates the correct d3 line for the funnel
     var funnelPath = d3.svg.line()
@@ -15545,6 +15592,7 @@ nv.models.sunburstChart = function() {
     var colorScale = d3.scale.category10();
 
     var paths = this._createPaths();
+    console.log('paths', paths);
 
     function drawTrapezoids(funnel, i){
       var trapezoid = funnelSvg
@@ -15575,11 +15623,46 @@ nv.models.sunburstChart = function() {
       .append('svg:text')
       .text(funnel._getLabel(i) + ': ' + funnel._getEngagementCount(i))
       .attr("x", function(d){ return funnel.width/2; })
+      // .attr("x", function(d){ return paths[i][3][0]; })
       .attr("y", function(d){
         return (paths[i][0][1] + paths[i][1][1])/2;}) // Average height of bases
       .attr("text-anchor", "middle")
       .attr("dominant-baseline", "middle")
       .attr("fill", "#fff");
+
+      // 绘制转化率
+      funnelSvg
+      .append('svg:text')
+      .text(funnel._getConversion(i))
+      .attr("x", function(d){ return -60; })
+      .attr("y", function(d) {
+        return paths[i][0][1];
+        })
+      .attr("text-anchor", "end")
+      .attr("dominant-baseline", "middle")
+      .attr("fill", "#000");
+
+      funnelSvg
+      .filter(function(d, i) {
+          console.log(d, i);
+      })
+      .append('svg:line')
+      .attr("x1", function(d) { return -50; })
+      .attr("y1", function(d) { return paths[i][0][1]; })
+      .attr("x2", function(d) { return paths[i][3][0]; })
+      .attr("y2", function(d) { return paths[i][3][1]; })
+      .attr("stroke", "#000");
+
+      // funnelSvg
+      // .append('svg:text')
+      // .text(funnel._getConversion(i))
+      // .attr("x", function(d){ return funnel.width; })
+      // .attr("y", function(d) {
+      //   return paths[i][0][1];
+      //   }) // Average height of bases
+      // .attr("text-anchor", "end")
+      // .attr("dominant-baseline", "middle")
+      // .attr("fill", "#000");
 
       if(i < paths.length - 1){
         transition.each('end', function(){
